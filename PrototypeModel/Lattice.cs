@@ -6,7 +6,7 @@ using System.Text;
 
 namespace PrototypeModel
 {
-    class Lattice
+    public class Lattice
     {
         private int _xCoord, _yCoord;
         private double _macroDensity;
@@ -22,11 +22,16 @@ namespace PrototypeModel
             _weights = Weights();
             _microEqDensity = MicroEqDensity();
             _IsBoundary = IsBoundary;
+        }
 
-            if (_IsBoundary)
-            {
-                Flip();
-            }
+        public bool IsBoundary()
+        {
+            return _IsBoundary;
+        }
+
+        public double GetMacroDensity()
+        {
+            return _microDensity.Sum();
         }
 
         public Point Coordinates()
@@ -49,19 +54,22 @@ namespace PrototypeModel
             _microDensity = nF;
         }
 
-        private void Flip()
-        {
-            throw new NotImplementedException();
-        }
-
         private double MacroDensity(int x, int y)
         {
+            //return Math.Sqrt(x^2+y^2);
             return 1;
         }
 
         private double[] MicroDensity()
         {
+
             double[] tmp = {1/9.0, 1/9.0, 1/9.0, 1/9.0, 1/9.0, 1/9.0, 1/9.0, 1/9.0, 1/9.0};
+
+            for (int i = 0; i < tmp.Length; i++)
+            {
+                tmp[i] = _macroDensity*tmp[i];
+            }
+
             return tmp;
         }
 
@@ -81,6 +89,5 @@ namespace PrototypeModel
             double[] tmp = {4/9.0, 1/9.0, 1/9.0, 1/9.0, 1/9.0, 1/36.0, 1/36.0, 1/36.0, 1/36.0};
             return tmp;
         }
-
     }
 }
