@@ -53,6 +53,14 @@ namespace PrototypeModel
                     StreamAndCollide(localLatticeBlock);
                 }
             }
+
+            foreach (List<Lattice> lattices in _grid)
+            {
+                foreach (Lattice lattice in lattices)
+                {
+                    lattice.UpdateDensity();
+                }
+            }
         }
 
         private List<Lattice> GetNeighbours(int xId, int yId)
@@ -85,7 +93,6 @@ namespace PrototypeModel
                 else
                 {
                     int j;
-                    //TODO: настроить отображение - переотражение i->j (на центральной ячейке, только в противоположном направлении
                     if (i==1 || i==2 || i==5 || i==6)
                     {
                         j = i + 2;
