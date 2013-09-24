@@ -24,6 +24,8 @@ namespace PrototypeModel
             _IsBoundary = IsBoundary;
         }
 
+
+
         public bool IsBoundary()
         {
             return _IsBoundary;
@@ -49,21 +51,20 @@ namespace PrototypeModel
             return _microEqDensity;
         }
 
-        public void NewF(double[] nF)
+        public void NewF(double nF,int i)
         {
-            _microDensity = nF;
+            _microDensity[i] = nF;
         }
 
         private double MacroDensity(int x, int y)
         {
-            //return Math.Sqrt(x^2+y^2);
             return 1;
         }
 
         private double[] MicroDensity()
         {
 
-            double[] tmp = {1/9.0, 1/9.0, 1/9.0, 1/9.0, 1/9.0, 1/9.0, 1/9.0, 1/9.0, 1/9.0};
+            double[] tmp = {1/15.0, 1/5.0, 1/5.0, 1/15.0, 1/15.0, 1/5.0, 1/15.0, 1/15.0, 1/15.0};
 
             for (int i = 0; i < tmp.Length; i++)
             {
@@ -86,7 +87,8 @@ namespace PrototypeModel
 
         private double[] Weights()
         {
-            double[] tmp = {4/9.0, 1/9.0, 1/9.0, 1/9.0, 1/9.0, 1/36.0, 1/36.0, 1/36.0, 1/36.0};
+            //TODO: Нормировать коэффициенты
+            double[] tmp = {4/9.0, 1/7.0, 1/7.0, 1/9.0, 1/9.0, 1/30.0, 1/36.0, 1/36.0, 1/36.0};
             return tmp;
         }
     }
