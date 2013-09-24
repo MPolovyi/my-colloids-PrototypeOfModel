@@ -64,7 +64,7 @@ namespace PrototypeModel
         private double[] MicroDensity()
         {
 
-            double[] tmp = {1/15.0, 1/5.0, 1/5.0, 1/15.0, 1/15.0, 1/5.0, 1/15.0, 1/15.0, 1/15.0};
+            double[] tmp = {1/9.0, 1/9.0, 1/9.0, 1/9.0, 1/9.0, 1/9.0, 1/9.0, 1/9.0, 1/9.0};
 
             for (int i = 0; i < tmp.Length; i++)
             {
@@ -88,7 +88,7 @@ namespace PrototypeModel
         private double[] Weights()
         {
             //TODO: Нормировать коэффициенты
-            double[] tmp = {4/9.0, 1/7.0, 1/7.0, 1/9.0, 1/9.0, 1/30.0, 1/36.0, 1/36.0, 1/36.0};
+            double[] tmp = {4/9.0, 1/5.0, 1/5.0, 1/9.0, 1/9.0, 1/30.0, 1/36.0, 1/36.0, 1/36.0};
             return tmp;
         }
     }

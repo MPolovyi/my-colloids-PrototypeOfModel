@@ -45,9 +45,9 @@ namespace PrototypeModel
 
         private void Generate()
         {
-            for (int x = 0; x < _gridSize; x++)
+            for (int x = 1; x < _gridSize-1; x++)
             {
-                for (int y = 0; y < _gridSize; y++)
+                for (int y = 1; y < _gridSize-1; y++)
                 {
                     List<Lattice> localLatticeBlock = GetNeighbours(x, y);
                     StreamAndCollide(localLatticeBlock);
@@ -76,17 +76,27 @@ namespace PrototypeModel
         {
             for (int i = 0; i < 9; i++)
             {
-                if (latticeBlock[i] != null)
+                if (!latticeBlock[i].IsBoundary())
                 {
-                    double collision = (latticeBlock[0].f()[i] - latticeBlock[0].fEq()[i]) / 0.77;
+                    double collision = (latticeBlock[0].f()[i] - latticeBlock[0].fEq()[i]) / 0.80;
                     double NewFi = latticeBlock[0].f()[i] - collision;
                     latticeBlock[i].NewF(NewFi,i);
                 }
                 else
                 {
-                    double collision = (latticeBlock[0].f()[i] - latticeBlock[0].fEq()[i]) / 0.77;
-                    double NewFi = latticeBlock[0].f()[i] - collision;
-                    latticeBlock[0].NewF(NewFi,i);
+                    int j;
+                    //TODO: настроить отображение - переотражение i->j (на центральной ячейке, только в противоположном направлении
+                    if (i==1 || i==2 || i==5 || i==6)
+                    {
+                        j = i + 2;
+                    }
+                    else
+                    {
+                        j = i - 2;
+                    }
+                    double collision = (latticeBlock[0].f()[j] - latticeBlock[0].fEq()[j]) / 0.80;
+                    double NewFi = latticeBlock[0].f()[j] - collision;
+                    latticeBlock[0].NewF(NewFi,j);
                 }
             }
         }
