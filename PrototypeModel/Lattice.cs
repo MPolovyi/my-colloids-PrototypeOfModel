@@ -113,11 +113,22 @@ namespace PrototypeModel
             for (int i = 0; i < 9; i++)
             {
                 tmp1[i] = (1/GetMacroDensity())*_microDensity[i]*_directions[i].X;
+
+                if (i==1 && _xCoord<500)
+                {
+                    tmp1[i] *= 20;
+                }
             }
+
             velocity[0] = tmp1.Sum();
             for (int i = 0; i < 9; i++)
             {
                 tmp1[i] = (1/GetMacroDensity())*_microDensity[i]*_directions[i].Y;
+
+                if (i == 1 && _xCoord < 500)
+                {
+                    tmp1[i] *= 20;
+                }
             }
             velocity[1] = tmp1.Sum();
             return velocity;
