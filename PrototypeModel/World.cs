@@ -9,17 +9,32 @@ namespace PrototypeModel
     class World
     {
         private int _gridSize = 10;
-        private List<List<Lattice>> _grid; 
-        //private Lattice[,] _grid;
-        private Point[] _directions =   {new Point(0, 0),
-                                         new Point(-1,0),
-                                         new Point(0,1),
-                                         new Point(1,0),
-                                         new Point(0,-1),
-                                         new Point(-1,1),
-                                         new Point(1,1),
-                                         new Point(-1,1),
-                                         new Point(-1,-1)};
+        private List<List<Lattice>> _grid;
+
+        private string[] _map = {"++++++++++",
+                              "+        +",
+                              "+        +",
+                              "+        +",
+                              "+   ++   +",
+                              "+   ++   +",
+                              "+        +",
+                              "+        +",
+                              "+        +",
+                              "++++++++++"};
+
+        private Point[] _reverceDirections =
+            {
+                new Point(0, 0),
+                new Point(-1, 0),
+                new Point(0, 1),
+                new Point(1, 0),
+                new Point(0, -1),
+                new Point(-1, 1),
+                new Point(1, 1),
+                new Point(-1, 1),
+                new Point(-1, -1)
+            };
+        
         private Bitmap WorldMap;
 
         public World()
@@ -30,7 +45,14 @@ namespace PrototypeModel
                 List<Lattice> tempList = new List<Lattice>(_gridSize);
                 for (int y = 0; y < _gridSize; y++)
                 {
-                    tempList.Add(new Lattice(x*1202/_gridSize, y*759/_gridSize, false));
+                    if (_map[x][y]==' ')
+                    {
+                        tempList.Add(new Lattice(x*1202/_gridSize, y*759/_gridSize, false));
+                    }
+                    else
+                    {
+                        tempList.Add(new Lattice(x*1202/_gridSize, y*759/_gridSize, true));
+                    }
                 }
                 _grid.Add(tempList);
             }
@@ -45,12 +67,15 @@ namespace PrototypeModel
 
         private void Generate()
         {
-            for (int x = 1; x < _gridSize-1; x++)
+            for (int x = 0; x < _gridSize; x++)
             {
-                for (int y = 1; y < _gridSize-1; y++)
+                for (int y = 0; y < _gridSize; y++)
                 {
-                    List<Lattice> localLatticeBlock = GetNeighbours(x, y);
-                    StreamAndCollide(localLatticeBlock);
+                    if (!_grid[x][y].IsBoundary())
+                    {
+                        List<Lattice> localLatticeBlock = GetNeighbours(x, y);
+                        StreamAndCollide(localLatticeBlock,x,y); 
+                    }
                 }
             }
 
@@ -66,11 +91,11 @@ namespace PrototypeModel
         private List<Lattice> GetNeighbours(int xId, int yId)
         {
             List<Lattice> neighbours = new List<Lattice>(9);
-            foreach (var direction in _directions)
+            foreach (var direction in _reverceDirections)
             {
                 try
                 {
-                    neighbours.Add(_grid[xId-direction.X][yId-direction.Y]);
+                    neighbours.Add(_grid[xId+direction.X][yId+direction.Y]);
                 }
                 catch (Exception)
                 {
@@ -80,7 +105,7 @@ namespace PrototypeModel
             return neighbours;
         } 
 
-        private void StreamAndCollide(List<Lattice> latticeBlock)
+        private void StreamAndCollide(List<Lattice> latticeBlock,int x,int y)
         {
             for (int i = 0; i < 9; i++)
             {
@@ -138,7 +163,9 @@ namespace PrototypeModel
                     float dens = 8*(float)lattice.GetMacroDensity();
                     //canvas.DrawString(str, timesFont, BlackBrush, lattice.Coordinates().X, lattice.Coordinates().Y);
                     canvas.DrawEllipse(pen, (float)lattice.Coordinates().X, (float)lattice.Coordinates().Y, dens, dens);
-                    
+                    canvas.DrawLine(pen, (float) lattice.Coordinates().X, (float) lattice.Coordinates().Y,
+                                    (float) (lattice.Coordinates().X + 20*lattice.MacroVelocity()[0]),
+                                    (float) (lattice.Coordinates().Y + 20*lattice.MacroVelocity()[1]));
                 }
             }
             return bmp;
