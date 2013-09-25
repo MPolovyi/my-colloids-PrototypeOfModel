@@ -83,7 +83,7 @@ namespace PrototypeModel
         {
             if (_xCoord>100 && _xCoord<200 && _yCoord>100 && _yCoord<400)
             {
-                double[] tmp = {1/9.0, 1/9.0, 1/9.0, 1/9.0, 1/9.0, 1/9.0, 1/9.0, 1/9.0, 1/9.0};
+                double[] tmp = {1/9.0, 1/5.0, 1/9.0, 0.02, 1/9.0, 1/9.0, 1/9.0, 1/9.0, 1/9.0};
                 for (int i = 0; i < tmp.Length; i++)
                 {
                     tmp[i] = _macroDensity * tmp[i];

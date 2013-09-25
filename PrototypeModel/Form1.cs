@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace PrototypeModel
@@ -18,8 +19,10 @@ namespace PrototypeModel
 
         private void button1_Click(object sender, EventArgs e)
         {
-            pictureBox1.BackColor = Color.AntiqueWhite;
-            UI.Button1Clicker(pictureBox1);
+            pictureBox1.BackColor = Color.GhostWhite;
+            UI.Button1Clicker(pictureBox1,label1);
         }
+
+
     }
 }

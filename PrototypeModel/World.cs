@@ -8,19 +8,30 @@ namespace PrototypeModel
 {
     class World
     {
-        private int _gridSize = 10;
+        private int _gridSize = 20;
         private List<List<Lattice>> _grid;
 
-        private string[] _map = {"++++++++++",
-                                 "+        +",
-                                 "+        +",
-                                 "+        +",
-                                 "+   ++   +",
-                                 "+   ++   +",
-                                 "+        +",
-                                 "+        +",
-                                 "+        +",
-                                 "++++++++++"};
+        private string[] _map = {"++++++++++++++++++++",
+                                 "+                  +",
+                                 "+                  +",
+                                 "+                  +",
+                                 "+                  +",
+                                 "+                  +",
+                                 "+                  +",
+                                 "+      ++++++      +",
+                                 "+      ++++++      +",
+                                 "+      ++++++      +",
+                                 "+      ++++++      +",
+                                 "+                  +",
+                                 "+                  +",
+                                 "+                  +",
+                                 "+                  +",
+                                 "+                  +",
+                                 "+                  +",
+                                 "+                  +",
+                                 "+                  +",
+                                 "++++++++++++++++++++"
+                                 };
 
         private Point[] _directions =
             {
@@ -111,7 +122,7 @@ namespace PrototypeModel
             {
                 if (!latticeBlock[i].IsBoundary())
                 {
-                    double collision = (latticeBlock[0].f()[i] - latticeBlock[0].fEq()[i]) / 0.80;
+                    double collision = (latticeBlock[0].f()[i] - latticeBlock[0].fEq()[i]) / 0.57;
                     double NewFi = latticeBlock[0].f()[i] - collision;
                     latticeBlock[i].NewF(NewFi,i);
                 }
@@ -126,7 +137,7 @@ namespace PrototypeModel
                     {
                         j = i - 2;
                     }
-                    double collision = (latticeBlock[0].f()[j] - latticeBlock[0].fEq()[j]) / 0.80;
+                    double collision = (latticeBlock[0].f()[j] - latticeBlock[0].fEq()[j]) / 0.57;
                     double NewFi = latticeBlock[0].f()[j] - collision;
                     latticeBlock[0].NewF(NewFi,j);
                 }
@@ -152,20 +163,31 @@ namespace PrototypeModel
             Bitmap bmp = new Bitmap(1202, 759);
             Graphics canvas = Graphics.FromImage(bmp);
 
-            Font timesFont = new Font("Times New Roman", 5.0f);
-            timesFont = new Font(timesFont,FontStyle.Regular);
-            Brush BlackBrush = new SolidBrush(Color.Black);
             foreach (var latticeString in lattices)
             {
                 foreach (var lattice in latticeString)
                 {
-                    Pen pen = new Pen(BlackBrush);
-                    float dens = 8*(float)lattice.GetMacroDensity();
+                    Pen penBlack = new Pen(Color.Black,5);
+                    Pen penBlue = new Pen(Color.Blue,5);
+                    Pen penRed = new Pen(Color.Red);
+                    //float dens = 8*(float)lattice.GetMacroDensity();
                     //canvas.DrawString(str, timesFont, BlackBrush, lattice.Coordinates().X, lattice.Coordinates().Y);
-                    canvas.DrawEllipse(pen, (float)lattice.Coordinates().X, (float)lattice.Coordinates().Y, dens, dens);
-                    canvas.DrawLine(pen, (float) lattice.Coordinates().X, (float) lattice.Coordinates().Y,
-                                    (float) (lattice.Coordinates().X + 20*lattice.MacroVelocity()[0]),
-                                    (float) (lattice.Coordinates().Y + 20*lattice.MacroVelocity()[1]));
+
+                    if (lattice.IsBoundary())
+                    {
+                        canvas.DrawEllipse(penBlack, (float) lattice.Coordinates().X - 1,
+                                           (float) lattice.Coordinates().Y - 1, 2, 2);
+                    }
+                    else
+                    {
+                        canvas.DrawEllipse(penBlue, (float) lattice.Coordinates().X - 1,
+                                           (float) lattice.Coordinates().Y - 1, 2, 2);
+                    }
+
+
+                    canvas.DrawLine(penRed, (float)lattice.Coordinates().X, (float)lattice.Coordinates().Y,
+                                    (float) (lattice.Coordinates().X + 100*lattice.MacroVelocity()[0]),
+                                    (float) (lattice.Coordinates().Y + 100*lattice.MacroVelocity()[1]));
                 }
             }
             return bmp;
