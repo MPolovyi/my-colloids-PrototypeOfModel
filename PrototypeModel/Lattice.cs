@@ -8,20 +8,23 @@ namespace PrototypeModel
 {
     public class Lattice
     {
-        private Point[] _directions =   {new Point(0, 0),
-                                         new Point(-1,0),
-                                         new Point(0,1),
-                                         new Point(1,0),
-                                         new Point(0,-1),
-                                         new Point(-1,1),
-                                         new Point(1,1),
-                                         new Point(-1,1),
-                                         new Point(-1,-1)};
+        private Point[] _directions =
+            {
+                new Point(0, 0),
+                new Point(1, 0),
+                new Point(0, -1),
+                new Point(1, 0),
+                new Point(0, 1),
+                new Point(1, -1),
+                new Point(-1, -1),
+                new Point(1, -1),
+                new Point(1, 1)
+            };
 
 
         private int _xCoord, _yCoord;
         private double _macroDensity;
-        private double[] _microDensity, _microDensityAfterTime, _microVelocity, _weights, _microEqDensity;
+        private double[] _microDensity, _microDensityAfterTime, _weights, _microEqDensity;
         private bool _IsBoundary;
 
         public Lattice(int x,int y,bool IsBoundary)
@@ -78,21 +81,39 @@ namespace PrototypeModel
 
         private double[] MicroDensity()
         {
-
-            double[] tmp = {1/9.0, 1/9.0, 1/9.0, 1/9.0, 1/9.0, 1/9.0, 1/9.0, 1/9.0, 1/9.0};
-
-            for (int i = 0; i < tmp.Length; i++)
+            if (_xCoord>100 && _xCoord<200 && _yCoord>100 && _yCoord<400)
             {
-                tmp[i] = _macroDensity*tmp[i];
+                double[] tmp = {1/9.0, 1/9.0, 1/9.0, 1/9.0, 1/9.0, 1/9.0, 1/9.0, 1/9.0, 1/9.0};
+                for (int i = 0; i < tmp.Length; i++)
+                {
+                    tmp[i] = _macroDensity * tmp[i];
+                }
+
+                return tmp;
+            }
+            else
+            {
+                double[] tmp = {1/9.0, 1/9.0, 1/9.0, 1/9.0, 1/9.0, 1/9.0, 1/9.0, 1/9.0, 1/9.0};
+                for (int i = 0; i < tmp.Length; i++)
+                {
+                    tmp[i] = _macroDensity * tmp[i];
+                }
+
+                return tmp;
             }
 
-            return tmp;
+
         }
 
         private double[] MicroEqDensity()
         {
             double[] tmp = new double[9];
             double[] Velocity = MacroVelocity();
+            if (_IsBoundary)
+            {
+                Velocity[0] = 0;
+                Velocity[1] = 0;
+            }
             for (int i = 0; i < 9; i++)
             {
                 //TODO: КАК ЗАДАВАТЬ СКОРОСТЬ????????
@@ -105,7 +126,7 @@ namespace PrototypeModel
             return tmp;
         }
 
-        private double[] MacroVelocity()
+        public double[] MacroVelocity()
         {
             double[] velocity = new double[2];
             
