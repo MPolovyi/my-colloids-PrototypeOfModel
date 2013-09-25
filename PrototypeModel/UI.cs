@@ -15,20 +15,21 @@ namespace PrototypeModel
         {
             World world = new World();
 
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 200; i++)
             {
                 Task<Bitmap> live = new Task<Bitmap>(()=>
                     {
                         Bitmap map = world.Live();
-                        MessageBox.Show("MessageFromThread");
+                        //MessageBox.Show("MessageFromThread");
                         return map;
                     });
                 live.Start();
-                live.Wait();
+                
                 pb.Image = live.Result;
 
                 Thread.Sleep(1000);
             }
+            MessageBox.Show("Fin");
         }
     }
 }
