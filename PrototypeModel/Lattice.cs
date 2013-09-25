@@ -13,11 +13,11 @@ namespace PrototypeModel
                 new Point(0, 0),
                 new Point(1, 0),
                 new Point(0, -1),
-                new Point(1, 0),
+                new Point(-1, 0),
                 new Point(0, 1),
                 new Point(1, -1),
                 new Point(-1, -1),
-                new Point(1, -1),
+                new Point(-1, 1),
                 new Point(1, 1)
             };
 
@@ -133,14 +133,14 @@ namespace PrototypeModel
             double[] tmp1 = new double[9];
             for (int i = 0; i < 9; i++)
             {
-                tmp1[i] = (1/GetMacroDensity())*_microDensity[i]*_directions[i].X;
+                tmp1[i] = _microDensity[i]*_directions[i].X;
             }
-            velocity[0] = tmp1.Sum();
+            velocity[0] = tmp1.Sum() / GetMacroDensity();
             for (int i = 0; i < 9; i++)
             {
-                tmp1[i] = (1/GetMacroDensity())*_microDensity[i]*_directions[i].Y;
+                tmp1[i] = _microDensity[i]*_directions[i].Y;
             }
-            velocity[1] = tmp1.Sum();
+            velocity[1] = tmp1.Sum() / GetMacroDensity();
             return velocity;
         }
 

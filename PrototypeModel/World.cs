@@ -12,27 +12,27 @@ namespace PrototypeModel
         private List<List<Lattice>> _grid;
 
         private string[] _map = {"++++++++++",
-                              "+        +",
-                              "+        +",
-                              "+        +",
-                              "+   ++   +",
-                              "+   ++   +",
-                              "+        +",
-                              "+        +",
-                              "+        +",
-                              "++++++++++"};
+                                 "+        +",
+                                 "+        +",
+                                 "+        +",
+                                 "+   ++   +",
+                                 "+   ++   +",
+                                 "+        +",
+                                 "+        +",
+                                 "+        +",
+                                 "++++++++++"};
 
-        private Point[] _reverceDirections =
+        private Point[] _directions =
             {
                 new Point(0, 0),
-                new Point(-1, 0),
-                new Point(0, 1),
                 new Point(1, 0),
                 new Point(0, -1),
+                new Point(-1, 0),
+                new Point(0, 1),
+                new Point(1, -1),
+                new Point(-1, -1),
                 new Point(-1, 1),
-                new Point(1, 1),
-                new Point(-1, 1),
-                new Point(-1, -1)
+                new Point(1, 1)
             };
         
         private Bitmap WorldMap;
@@ -91,7 +91,7 @@ namespace PrototypeModel
         private List<Lattice> GetNeighbours(int xId, int yId)
         {
             List<Lattice> neighbours = new List<Lattice>(9);
-            foreach (var direction in _reverceDirections)
+            foreach (var direction in _directions)
             {
                 try
                 {
