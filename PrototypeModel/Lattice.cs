@@ -31,12 +31,12 @@ namespace PrototypeModel
         {
             _xCoord = x;
             _yCoord = y;
+            _IsBoundary = IsBoundary;
             _macroDensity = MacroDensity(_xCoord, _yCoord);
             _microDensity = MicroDensity();
             _microDensityAfterTime = MicroDensity();
             _weights = Weights();
             _microEqDensity = MicroEqDensity();
-            _IsBoundary = IsBoundary;
         }
 
         public bool IsBoundary()
@@ -81,7 +81,7 @@ namespace PrototypeModel
 
         private double[] MicroDensity()
         {
-            if (_xCoord>100 && _xCoord<200 && _yCoord>100 && _yCoord<400)
+            if (_xCoord>100 && _xCoord<200 && !_IsBoundary)
             {
                 double[] tmp = {1/9.0, 1/5.0, 1/9.0, 0.02, 1/9.0, 1/9.0, 1/9.0, 1/9.0, 1/9.0};
                 for (int i = 0; i < tmp.Length; i++)

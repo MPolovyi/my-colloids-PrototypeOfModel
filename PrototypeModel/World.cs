@@ -69,10 +69,10 @@ namespace PrototypeModel
             }
         }
 
-        public Bitmap Live()
+        public Bitmap Live(int iter)
         {
             Generate();
-            WorldMap = DrawBitmap(_grid);
+            WorldMap = DrawBitmap(_grid,iter);
             return WorldMap;
         }
 
@@ -122,7 +122,7 @@ namespace PrototypeModel
             {
                 if (!latticeBlock[i].IsBoundary())
                 {
-                    double collision = (latticeBlock[0].f()[i] - latticeBlock[0].fEq()[i]) / 0.57;
+                    double collision = (latticeBlock[0].f()[i] - latticeBlock[0].fEq()[i]) / 0.55;
                     double NewFi = latticeBlock[0].f()[i] - collision;
                     latticeBlock[i].NewF(NewFi,i);
                 }
@@ -137,7 +137,7 @@ namespace PrototypeModel
                     {
                         j = i - 2;
                     }
-                    double collision = (latticeBlock[0].f()[j] - latticeBlock[0].fEq()[j]) / 0.57;
+                    double collision = (latticeBlock[0].f()[j] - latticeBlock[0].fEq()[j]) / 0.55;
                     double NewFi = latticeBlock[0].f()[j] - collision;
                     latticeBlock[0].NewF(NewFi,j);
                 }
@@ -158,7 +158,7 @@ namespace PrototypeModel
             }
         }
 
-        private static Bitmap DrawBitmap(List<List<Lattice>> lattices)
+        private static Bitmap DrawBitmap(List<List<Lattice>> lattices, int iter)
         {
             Bitmap bmp = new Bitmap(1202, 759);
             Graphics canvas = Graphics.FromImage(bmp);
@@ -183,12 +183,12 @@ namespace PrototypeModel
                         canvas.DrawEllipse(penBlue, (float) lattice.Coordinates().X - 1,
                                            (float) lattice.Coordinates().Y - 1, 2, 2);
                     }
-
-
                     canvas.DrawLine(penRed, (float)lattice.Coordinates().X, (float)lattice.Coordinates().Y,
                                     (float) (lattice.Coordinates().X + 100*lattice.MacroVelocity()[0]),
                                     (float) (lattice.Coordinates().Y + 100*lattice.MacroVelocity()[1]));
                 }
+
+                canvas.DrawString(iter.ToString(), new Font("Arial",10), new SolidBrush(Color.Black), 10, 10);
             }
             return bmp;
         }

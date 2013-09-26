@@ -20,9 +20,13 @@ namespace PrototypeModel
         private void button1_Click(object sender, EventArgs e)
         {
             pictureBox1.BackColor = Color.GhostWhite;
-            UI.Button1Clicker(pictureBox1,label1);
+            UI.redraw += Redraw;
+            UI.Button1Clicker(pictureBox1);
         }
 
-
+        private void Redraw(object sender, ImageArguments arguments)
+        {
+            pictureBox1.Image = arguments._bmp;
+        }
     }
 }
