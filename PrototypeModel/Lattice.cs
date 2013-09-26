@@ -25,13 +25,14 @@ namespace PrototypeModel
         private int _xCoord, _yCoord;
         private double _macroDensity;
         private double[] _microDensity, _microDensityAfterTime, _weights, _microEqDensity;
-        private bool _IsBoundary;
+        private bool _IsBoundary,_IsTransition;
 
-        public Lattice(int x,int y,bool IsBoundary)
+        public Lattice(int x,int y,bool IsBoundary,bool IsTransition)
         {
             _xCoord = x;
             _yCoord = y;
             _IsBoundary = IsBoundary;
+            _IsTransition = IsTransition;
             _macroDensity = MacroDensity(_xCoord, _yCoord);
             _microDensity = MicroDensity();
             _microDensityAfterTime = MicroDensity();
@@ -83,7 +84,7 @@ namespace PrototypeModel
         {
             if (_xCoord>100 && _xCoord<200 && !_IsBoundary)
             {
-                double[] tmp = {1/9.0, 1/5.0, 1/9.0, 0.02, 1/9.0, 1/9.0, 1/9.0, 1/9.0, 1/9.0};
+                double[] tmp = {1/18.0, 9/18.0, 1/18.0, 1/18.0, 1/18.0, 1/18.0, 1/18.0, 1/18.0, 1/18.0};
                 for (int i = 0; i < tmp.Length; i++)
                 {
                     tmp[i] = _macroDensity * tmp[i];
@@ -109,7 +110,7 @@ namespace PrototypeModel
         {
             double[] tmp = new double[9];
             double[] Velocity = MacroVelocity();
-            if (_IsBoundary)
+            if (_IsBoundary && !_IsTransition)
             {
                 Velocity[0] = 0;
                 Velocity[1] = 0;

@@ -25,8 +25,8 @@ namespace PrototypeModel
                     for (int i = 0; i < 200; i++)
                     {
                         Bitmap map = world.Live(i);
-                        Thread.Sleep(1000);
                         redraw(null, new ImageArguments(map,i.ToString()));
+                        Thread.Sleep(200);
                     }
                     MessageBox.Show("Fin");
                 });
