@@ -84,7 +84,7 @@ namespace PrototypeModel
         {
             if (_xCoord>100 && _xCoord<200 && !_IsBoundary)
             {
-                double[] tmp = {1/18.0, 9/18.0, 1/18.0, 1/18.0, 1/18.0, 1/18.0, 1/18.0, 1/18.0, 1/18.0};
+                double[] tmp = {1/54.0, 45/54.0, 1/54.0, 1/54.0, 1/54.0, 1/54.0, 1/54.0, 1/54.0, 1/54.0};
                 for (int i = 0; i < tmp.Length; i++)
                 {
                     tmp[i] = _macroDensity * tmp[i];
@@ -134,34 +134,16 @@ namespace PrototypeModel
             double[] tmp1 = new double[9];
             for (int i = 0; i < 9; i++)
             {
-<<<<<<< HEAD
                 tmp1[i] = (1/GetMacroDensity())*_microDensity[i]*_directions[i].X;
-
-                if (i==1 && _xCoord<500)
-                {
-                    tmp1[i] *= 20;
-                }
             }
 
             velocity[0] = tmp1.Sum();
             for (int i = 0; i < 9; i++)
             {
                 tmp1[i] = (1/GetMacroDensity())*_microDensity[i]*_directions[i].Y;
-
-                if (i == 1 && _xCoord < 500)
-                {
-                    tmp1[i] *= 20;
+                
                 }
-=======
-                tmp1[i] = _microDensity[i]*_directions[i].X;
-            }
-            velocity[0] = tmp1.Sum() / GetMacroDensity();
-            for (int i = 0; i < 9; i++)
-            {
-                tmp1[i] = _microDensity[i]*_directions[i].Y;
->>>>>>> f8c9634816f3c38e6d3577d07d42327d60bef31d
-            }
-            velocity[1] = tmp1.Sum() / GetMacroDensity();
+            velocity[1] = tmp1.Sum();
             return velocity;
         }
 
