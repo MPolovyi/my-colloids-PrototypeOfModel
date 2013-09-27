@@ -9,52 +9,55 @@ namespace PrototypeModel
 {
     class World
     {
-        private int _gridSize = 40;
+        private Point _gridSize;
         private List<List<Lattice>> _grid;
 
         private string[] _map =
             {
-                "++++++++++++++++++++++++++++++++++++++++",
-                ">                                      >",
-                ">                                      >",
-                ">                                      >",
-                ">                                      >",
-                ">                                      >",
-                ">                                      >",
-                ">                                      >",
-                ">                                      >",
-                ">                                      >",
-                ">                                      >",
-                ">                                      >",
-                ">                                      >",
-                ">                                      >",
-                ">                                      >",
-                ">                                      >",
-                ">                                      >",
-                ">                                      >",
-                ">                                      >",
-                ">                                      >",
-                ">                                      >",
-                ">                                      >",
-                ">                                      >",
-                ">                                      >",
-                ">                                      >",
-                ">                                      >",
-                ">                                      >",
-                ">                                      >",
-                ">                                      >",
-                ">                                      >",
-                ">                                      >",
-                ">                                      >",
-                ">                                      >",
-                ">                                      >",
-                ">                                      >",
-                ">                                      >",
-                ">                                      >",
-                ">                                      >",
-                ">                                      >",
-                "++++++++++++++++++++++++++++++++++++++++"
+                "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++",
+                ">                                                                                                  >",
+                ">                                                                                                  >",
+                ">                                                                                                  >",
+                ">                                                                                                  >",
+                ">                                                                                                  >",
+                ">                                                                                                  >",
+                ">                                                                                                  >",
+                ">                                                                                                  >",
+                ">                                                                                                  >",
+                ">                                                                                                  >",
+                ">                                                                                                  >",
+                ">                                                                                                  >",
+                ">                                                                                                  >",
+                ">                                                                                                  >",
+                ">                                                                                                  >",
+                ">                                                                                                  >",
+                ">                                                                                                  >",
+                ">                                                                                                  >",
+                ">                                                                                                  >",
+                ">                                                                                                  >",
+                ">                                                                                                  >",
+                ">                                                                                                  >",
+                "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
             };
+
+/*                   \
+ *                    \ 
+ *   |-----------------  X
+ *   |                /
+ *   |               /
+ *   |   6   2   5   
+ *   |    \  |  /
+ *   |   3 - 0 - 1
+ *   |    /  |  \
+ *   |   7   4   8
+ *\  |  /
+ * \ | /
+ *  \|/
+ * 
+ *   Y
+ * 
+ * 
+ */
 
         private Point[] _directions =
             {
@@ -73,24 +76,25 @@ namespace PrototypeModel
 
         public World()
         {
-            _gridSize = _map[0].Length;
-            _grid = new List<List<Lattice>>(_gridSize);
-            for (int x = 0; x < _gridSize; x++)
+            _gridSize.X = _map[0].Length;
+            _gridSize.Y = _map.Length;
+            _grid = new List<List<Lattice>>(_gridSize.X);
+            for (int x = 0; x < _gridSize.X; x++)
             {
-                List<Lattice> tempList = new List<Lattice>(_gridSize);
-                for (int y = 0; y < _gridSize; y++)
+                List<Lattice> tempList = new List<Lattice>(_gridSize.Y);
+                for (int y = 0; y < _gridSize.Y; y++)
                 {
                     if (_map[y][x] == ' ')
                     {
-                        tempList.Add(new Lattice(x*1202/_gridSize, y*759/_gridSize, false, false));
+                        tempList.Add(new Lattice(x*1202/_gridSize.X, y*640/_gridSize.Y, false, false));
                     }
                     else if (_map[y][x] == '>')
                     {
-                        tempList.Add(new Lattice(x*1202/_gridSize, y*759/_gridSize, true, true));
+                        tempList.Add(new Lattice(x*1202/_gridSize.X, y*640/_gridSize.Y, false, true));
                     }
                     else
                     {
-                        tempList.Add(new Lattice(x*1202/_gridSize, y*759/_gridSize, true, false));
+                        tempList.Add(new Lattice(x*1202/_gridSize.X, y*640/_gridSize.Y, true, false));
                     }
                 }
                 _grid.Add(tempList);
@@ -106,9 +110,9 @@ namespace PrototypeModel
 
         private void Generate()
         {
-            for (int x = 0; x < _gridSize; x++)
+            for (int x = 0; x < _gridSize.X; x++)
             {
-                for (int y = 0; y < _gridSize; y++)
+                for (int y = 0; y < _gridSize.Y; y++)
                 {
                     if (!_grid[x][y].IsBoundary() || _map[y][x]=='>')
                     {
@@ -129,31 +133,32 @@ namespace PrototypeModel
 
         private List<Lattice> GetNeighbours(int xId, int yId)
         {
-            int len = _gridSize - 1;
+            int lenX = _gridSize.X - 1;
+            int lenY = _gridSize.Y - 1;
             List<Lattice> neighbours = new List<Lattice>(9);
             foreach (var direction in _directions)
             {
                 try
                 {
-                    neighbours.Add(_grid[xId + direction.X][yId + direction.Y]);
+                    neighbours.Add(_grid[xId - direction.X][yId + direction.Y]);
                 }
                 catch (Exception)
                 {
                     if (xId == 0)
                     {
-                        neighbours.Add(_grid[xId + direction.X + len][yId + direction.Y]);
+                        neighbours.Add(_grid[xId - direction.X + lenX][yId + direction.Y]);
                     }
-                    else if (xId == (len))
+                    else if (xId == (lenX))
                     {
-                        neighbours.Add(_grid[xId + direction.X - len][yId + direction.Y]);
+                        neighbours.Add(_grid[xId - direction.X - lenX][yId + direction.Y]);
                     }
                     else if (yId == 0)
                     {
-                        neighbours.Add(_grid[xId + direction.X][yId + direction.Y + len]);
+                        neighbours.Add(_grid[xId - direction.X][yId + direction.Y + lenY]);
                     }
-                    else if (yId == (len))
+                    else if (yId == (lenY))
                     {
-                        neighbours.Add(_grid[xId + direction.X][yId + direction.Y - len]);
+                        neighbours.Add(_grid[xId - direction.X][yId + direction.Y - lenY]);
                     }
                     else
                     {

@@ -22,7 +22,7 @@ namespace PrototypeModel
             World world = new World();
             Task.Factory.StartNew(() =>
                 {
-                    for (int i = 0; i < 200; i++)
+                    for (int i = 0; i < 50; i++)
                     {
                         Bitmap map = world.Live(i);
                         redraw(null, new ImageArguments(map,i.ToString()));
