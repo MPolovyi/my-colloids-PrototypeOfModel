@@ -21,12 +21,33 @@ namespace PrototypeModel
         {
             pictureBox1.BackColor = Color.GhostWhite;
             UI.redraw += Redraw;
-            UI.Button1Clicker(pictureBox1);
+            double sleepTime;
+            sleepTime = double.Parse(ReplaceDot(textBox1.Text));
+
+            int iterations = int.Parse(textBox2.Text);
+            UI.Button1Clicker(pictureBox1,(int)(sleepTime*1000),iterations);
         }
 
         private void Redraw(object sender, ImageArguments arguments)
         {
             pictureBox1.Image = arguments._bmp;
+        }
+
+        private string ReplaceDot(string str)
+        {
+            string outStr = "";
+            foreach (char c in str)
+            {
+                if (c!='.')
+                {
+                    outStr += c;
+                }
+                else
+                {
+                    outStr += '.';
+                }
+            }
+            return outStr;
         }
     }
 }

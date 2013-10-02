@@ -12,21 +12,22 @@ namespace PrototypeModel
 {
     public static class UI
     {
-
         public delegate void Drawer(Object sender, ImageArguments bmp);
 
         public static event Drawer redraw;
 
-        public static void Button1Clicker(PictureBox pb)
+        public static void Button1Clicker(PictureBox pb,int sleepTime,int iterationCount)
         {
-            World world = new World();
+            World world = new World(pb.Height, pb.Width);
             Task.Factory.StartNew(() =>
                 {
-                    for (int i = 0; i < 50; i++)
+                    Bitmap map = world.InitialCondition();
+                    for (int i = 0; i < iterationCount; i++)
                     {
-                        Bitmap map = world.Live(i);
-                        redraw(null, new ImageArguments(map,i.ToString()));
-                        Thread.Sleep(200);
+                        redraw(null, new ImageArguments(map, i.ToString()));
+                        map = world.Live(i);
+                        //MessageBox.Show(i.ToString());
+                        Thread.Sleep(sleepTime);
                     }
                     MessageBox.Show("Fin");
                 });
