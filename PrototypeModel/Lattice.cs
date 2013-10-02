@@ -38,8 +38,9 @@ namespace PrototypeModel
 
         public Lattice(int x,int y,bool IsBoundary,bool IsTransition)
         {
-            _outerForce.X = 0;
-            _outerForce.Y = - 5; 
+            _outerForce.X = 0.1;
+            _outerForce.Y = - Math.Pow(Math.Abs(x - 500), 0.5)/5;
+            
             _xCoord = x;
             _yCoord = y;
             _IsBoundary = IsBoundary;
