@@ -14,76 +14,39 @@ namespace PrototypeModel
 
         private string[] _map =
             {
-                "+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>+",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                             ++++                                                                     +",
-                "+                                                         +++++++++++                                                                  +",
-                "+                                                        ++++++++++++++                                                                +",
-                "+                                                       +++++++++++++++++                                                              +",
-                "+                                                     ++++++++++++++++++++                                                             +",
-                "+                                                    +++++++++++++++++++++++                                                           +",
-                "+                                                   +++++++++++++++++++++++                                                            +",
-                "+                                                       +++++++++++++++++                                                              +",
-                "+                                                          ++++++++++++                                                                +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+                                                                                                                                      +",
-                "+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>+"
+                "+>>>>>>>>>>>>>>>>>>>>>>>+",
+                "+                       +",
+                "+                       +",
+                "+                       +",
+                "+                       +",
+                "+                       +",
+                "+                       +",
+                "+                       +",
+                "+                       +",
+                "+                       +",
+                "+                       +",
+                "+                       +",
+                "+         ++            +",
+                "+        ++++           +",
+                "+                       +",
+                "+                       +",
+                "+                       +",
+                "+                       +",
+                "+                       +",
+                "+                       +",
+                "+                       +",
+                "+                       +",
+                "+                       +",
+                "+                       +",
+                "+                       +",
+                "+                       +",
+                "+                       +",
+                "+                       +",
+                "+                       +",
+                "+                       +",
+                "+                       +",
+                "+                       +",
+                "+>>>>>>>>>>>>>>>>>>>>>>>+"
             };
 
         /*                   \
@@ -150,10 +113,8 @@ namespace PrototypeModel
             {
                 for (int y = 0; y < _gridSize.Y; y++)
                 {
-                    if (!_grid[x][y].IsBoundary())
-                    {
-                        _grid[x][y].neighbours = GetNeighbours(x, y);
-                    }
+
+                    _grid[x][y].neighbours = GetNeighbours(x, y);
                 }
             }
         }
@@ -171,10 +132,7 @@ namespace PrototypeModel
             {
                 for (int y = 0; y < _gridSize.Y; y++)
                 {
-                    if (!_grid[x][y].IsBoundary())
-                    {
-                        StreamAndCollide(_grid[x][y].neighbours, x, y);
-                    }
+                    StreamAndCollide(_grid[x][y].neighbours, x, y);
                 }
             }
 
@@ -200,21 +158,24 @@ namespace PrototypeModel
                 }
                 catch (Exception)
                 {
-                    if (xId == 0)
+                    if (_map[yId][xId]=='>')
                     {
-                        neighbours.Add(_grid[xId + lenX][yId + direction.Y]);
-                    }
-                    else if (xId == (lenX))
-                    {
-                        neighbours.Add(_grid[xId - lenX][yId + direction.Y]);
-                    }
-                    else if (yId == 0)
-                    {
-                        neighbours.Add(_grid[xId + direction.X][yId + direction.Y + lenY]);
-                    }
-                    else if (yId == (lenY))
-                    {
-                        neighbours.Add(_grid[xId + direction.X][yId - lenY]);
+                        if (xId == 0)
+                        {
+                            neighbours.Add(_grid[xId + lenX][yId + direction.Y]);
+                        }
+                        else if (xId == (lenX))
+                        {
+                            neighbours.Add(_grid[xId - lenX][yId + direction.Y]);
+                        }
+                        else if (yId == 0)
+                        {
+                            neighbours.Add(_grid[xId + direction.X][yId + lenY]);
+                        }
+                        else if (yId == (lenY))
+                        {
+                            neighbours.Add(_grid[xId + direction.X][yId - lenY]);
+                        }
                     }
                     else
                     {
@@ -230,27 +191,31 @@ namespace PrototypeModel
         {
             for (int i = 0; i < _directions.Length; i++)
             {
-                if (!latticeBlock[i].IsBoundary())
+                try
                 {
-                    double collision = (latticeBlock[0].f()[i] - latticeBlock[0].fEq()[i] + latticeBlock[0].Force()[i])/0.55;
-                    double NewFi = latticeBlock[0].f()[i] - collision;
-                    latticeBlock[i].NewF(NewFi, i);
-                }
-                else if (latticeBlock[i].IsBoundary())
-                {
-                    int j;
-                    if (i == 1 || i == 2 || i == 5 || i == 6)
+                    if (!latticeBlock[i].IsBoundary())
                     {
-                        j = i + 2;
+                        double collision = (latticeBlock[0].f()[i] - latticeBlock[0].fEq()[i] + latticeBlock[0].Force()[i])/5;
+                        double NewFi = latticeBlock[0].f()[i] - collision;
+                        latticeBlock[i].NewF(NewFi, i);
                     }
-                    else
+                    else if (latticeBlock[i].IsBoundary())
                     {
-                        j = i - 2;
+                        int j=0;
+                        if (i == 1 || i == 2 || i == 5 || i == 6)
+                        {
+                            j = i + 2;
+                        }
+                        else if (i!=0)
+                        {
+                            j = i - 2;
+                        }
+                        double collision = (latticeBlock[0].f()[i] - latticeBlock[0].fEq()[i] + latticeBlock[0].Force()[i]) /5;
+                        double NewFi = latticeBlock[0].f()[i] -collision;
+                        latticeBlock[i].NewF(NewFi, j);
                     }
-                    double collision = (latticeBlock[0].f()[i] - latticeBlock[0].fEq()[i] + latticeBlock[0].Force()[i]) / 0.55;
-                    double NewFi = latticeBlock[0].f()[i] -collision;
-                    latticeBlock[0].NewF(NewFi, j);
                 }
+                catch (Exception){}
             }
         }
 
@@ -280,9 +245,6 @@ namespace PrototypeModel
                         canvas.DrawEllipse(penBlue, (float) lattice.Coordinates().X - 1,
                                            (float) lattice.Coordinates().Y - 1, 1, 1);
                     }
-                    canvas.DrawLine(penRed, (float) lattice.Coordinates().X, (float) lattice.Coordinates().Y,
-                                    (float) (lattice.Coordinates().X + 5*lattice.MacroVelocity().X),
-                                    (float) (lattice.Coordinates().Y + 5*lattice.MacroVelocity().Y));
 
                     //for (int i = 1; i < _directions.Length; i++)
                     //{
@@ -290,6 +252,12 @@ namespace PrototypeModel
                     //                    (float)(lattice.Coordinates().X + 100 * lattice.f()[i] * _directions[i].X),
                     //                    (float)(lattice.Coordinates().Y + 100 * lattice.f()[i] * _directions[i].Y));
                     //}
+
+                    canvas.DrawLine(penRed, (float) lattice.Coordinates().X, (float) lattice.Coordinates().Y,
+                                    (float) (lattice.Coordinates().X + 5*lattice.MacroVelocity().X),
+                                    (float) (lattice.Coordinates().Y + 5*lattice.MacroVelocity().Y));
+
+
                 }
 
                 canvas.DrawString((iter+1).ToString(), new Font("Arial", 10), new SolidBrush(Color.Black), 10, 10);

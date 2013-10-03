@@ -11,26 +11,21 @@ namespace PrototypeModel
 
         public List<Lattice> neighbours; 
 
-        private Point[] _directions =
+        private Vector<double>[] _directions =
             {
-                new Point(0, 0),
-                new Point(1, 0),
-                new Point(0, -1),
-                new Point(-1, 0),
-                new Point(0, 1),
-                new Point(1, -1),
-                new Point(-1, -1),
-                new Point(-1, 1),
-                new Point(1, 1)
+                new Vector<double>(0, 0),
+                new Vector<double>(1, 0),
+                new Vector<double>(0, -1),
+                new Vector<double>(-1, 0),
+                new Vector<double>(0, 1),
+                new Vector<double>(1, -1),
+                new Vector<double>(-1, -1),
+                new Vector<double>(-1, 1),
+                new Vector<double>(1, 1)
             };
 
-        public struct Vector
-        {
-            public double X;
-            public double Y;
-        }
 
-        private Vector _outerForce;
+        private Vector<double> _outerForce;
         private int _xCoord, _yCoord;
         private double _macroDensity;
         private double[] _microDensity, _microDensityAfterTime, _weights, _microEqDensity;
@@ -38,8 +33,7 @@ namespace PrototypeModel
 
         public Lattice(int x,int y,bool IsBoundary,bool IsTransition)
         {
-            _outerForce.X = 0.1;
-            _outerForce.Y = - Math.Pow(Math.Abs(x - 500), 0.5)/5;
+            _outerForce = new Vector<double>(0,-10);
             
             _xCoord = x;
             _yCoord = y;
@@ -81,23 +75,10 @@ namespace PrototypeModel
         public double[] Force()
         {
             double[] tmp = new double[_directions.Length];
-            Vector velocity = MacroVelocity();
-            for (int i = 0; i < tmp.Length; i++)
-            {
-                Vector dirDotVelocityOndir = new Vector();
-                dirDotVelocityOndir.X = (_directions[i].X*velocity.X + _directions[i].Y*velocity.Y)*_directions[i].X;
-                dirDotVelocityOndir.X = (_directions[i].X*velocity.X + _directions[i].Y*velocity.Y)*_directions[i].Y;
-
-                Vector tmpVector = new Vector();
-                tmpVector.X = _directions[i].X - velocity.X + 3*dirDotVelocityOndir.X;
-                tmpVector.Y = _directions[i].Y - velocity.Y + 3*dirDotVelocityOndir.Y;
-
-                tmp[i] = 3*_weights[i]*(tmpVector.X*_outerForce.X + tmpVector.Y*_outerForce.Y);
-            }
 
             for (int i = 0; i < tmp.Length; i++)
             {
-                tmp[i] = _weights[i]*(_outerForce.X*_directions[i].X + _outerForce.Y*_directions[i].Y);
+                tmp[i] = _weights[i]*(_outerForce * _directions[i]);
             }
 
             return tmp;
@@ -148,7 +129,7 @@ namespace PrototypeModel
         private double[] MicroEqDensity()
         {
             double[] tmp = new double[_directions.Length];
-            Vector Velocity = MacroVelocity();
+            Vector<double> Velocity = MacroVelocity();
             if (_IsBoundary && !_IsTransition)
             {
                 Velocity.X = 0;
@@ -158,16 +139,15 @@ namespace PrototypeModel
             {
                 // omega_i * rho * (1 + 3(e_i,u) + 9*(e_i,u)^2 / 2 - 3*u^2/2), где (e_i,u) - скалярное произведение
                 tmp[i] = _weights[i]*GetMacroDensity()*
-                         (1 + 3*(_directions[i].X*Velocity.X + _directions[i].Y*Velocity.Y) +
-                          9*(Math.Pow(_directions[i].X*Velocity.X + _directions[i].Y*Velocity.Y, 2))/2 -
-                          3*(Math.Pow(Velocity.X, 2) + Math.Pow(Velocity.Y, 2))/2);
+                         (1 + 3*(_directions[i]*Velocity) +
+                          9*(Math.Pow(_directions[i]*Velocity, 2))/2 - 3*(Velocity*Velocity)/2);
             }
             return tmp;
         }
 
-        public Vector MacroVelocity()
+        public Vector<double> MacroVelocity()
         {
-            Vector velocity = new Vector();
+            Vector<double> velocity = new Vector<double>();
             
             double[] tmp1 = new double[_directions.Length];
             for (int i = 1; i < _directions.Length; i++)
