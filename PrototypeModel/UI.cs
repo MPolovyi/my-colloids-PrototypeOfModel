@@ -16,9 +16,9 @@ namespace PrototypeModel
 
         public static event Drawer redraw;
 
-        public static void Button1Clicker(PictureBox pb,int sleepTime,int iterationCount)
+        public static void Button1Clicker(PictureBox pb,int sleepTime,int iterationCount,double force, double scale)
         {
-            World world = new World(pb.Height, pb.Width);
+            World world = new World(pb.Height, pb.Width, force,scale);
             Task.Factory.StartNew(() =>
                 {
                     Bitmap map = world.InitialCondition();

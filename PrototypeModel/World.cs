@@ -11,42 +11,44 @@ namespace PrototypeModel
     {
         private Point _gridSize;
         private List<List<Lattice>> _grid;
+        private double _scale;
+
 
         private string[] _map =
             {
-                "+>>>>>>>>>>>>>>>>>>>>>>>+",
-                "+                       +",
-                "+                       +",
-                "+                       +",
-                "+                       +",
-                "+                       +",
-                "+                       +",
-                "+                       +",
-                "+                       +",
-                "+                       +",
-                "+                       +",
-                "+                       +",
-                "+         ++            +",
-                "+        ++++           +",
-                "+                       +",
-                "+                       +",
-                "+                       +",
-                "+                       +",
-                "+                       +",
-                "+                       +",
-                "+                       +",
-                "+                       +",
-                "+                       +",
-                "+                       +",
-                "+                       +",
-                "+                       +",
-                "+                       +",
-                "+                       +",
-                "+                       +",
-                "+                       +",
-                "+                       +",
-                "+                       +",
-                "+>>>>>>>>>>>>>>>>>>>>>>>+"
+                "+++++>>>>>>>>>>>>>>>>+++++",
+                "+   +                +   +",
+                "+   +                +   +",
+                "+   +                +   +",
+                "+   +                +   +",
+                "+   +                +   +",
+                "+   +                +   +",
+                "+   +                +   +",
+                "+   +                +   +",
+                "++++++ + + + + + + + +++++",
+                ">                        >",
+                ">                        >",
+                ">                        >",
+                ">                        >",
+                ">                        >",
+                ">                        >",
+                ">                        >",
+                ">                        >",
+                ">                        >",
+                ">                        >",
+                ">                        >",
+                ">                        >",
+                ">                        >",
+                ">                        >",
+                ">                        >",
+                ">                        >",
+                ">                        >",
+                ">                        >",
+                ">                        >",
+                ">                        >",
+                ">                        >",
+                ">                        >",
+                "+>>>>>>>>>>>>>>>>>>>>>>>>+"
             };
 
         /*                   \
@@ -83,8 +85,16 @@ namespace PrototypeModel
 
         private Bitmap WorldMap;
 
-        public World(int heights, int width)
+        public World(int heights, int width, double force, double scale)
         {
+            if ((int)scale == 20)
+            {
+                _scale = 40/force;
+            }
+            else
+            {
+                _scale = scale;
+            }
             _gridSize.X = _map[0].Length;
             _gridSize.Y = _map.Length;
             _grid = new List<List<Lattice>>(_gridSize.X);
@@ -95,15 +105,15 @@ namespace PrototypeModel
                 {
                     if (_map[y][x] == ' ')
                     {
-                        tempList.Add(new Lattice(x*width/_gridSize.X, y*heights/_gridSize.Y, false, false));
+                        tempList.Add(new Lattice(x*width/_gridSize.X, y*heights/_gridSize.Y, false, false, force));
                     }
                     else if (_map[y][x] == '>')
                     {
-                        tempList.Add(new Lattice(x*width/_gridSize.X, y*heights/_gridSize.Y, false, true));
+                        tempList.Add(new Lattice(x*width/_gridSize.X, y*heights/_gridSize.Y, false, true,force));
                     }
                     else
                     {
-                        tempList.Add(new Lattice(x*width/_gridSize.X, y*heights/_gridSize.Y, true, false));
+                        tempList.Add(new Lattice(x*width/_gridSize.X, y*heights/_gridSize.Y, true, false,force));
                     }
                 }
                 _grid.Add(tempList);
@@ -164,15 +174,15 @@ namespace PrototypeModel
                         {
                             neighbours.Add(_grid[xId + lenX][yId + direction.Y]);
                         }
-                        else if (xId == (lenX))
+                        if (xId == (lenX))
                         {
                             neighbours.Add(_grid[xId - lenX][yId + direction.Y]);
                         }
-                        else if (yId == 0)
+                        if (yId == 0)
                         {
                             neighbours.Add(_grid[xId + direction.X][yId + lenY]);
                         }
-                        else if (yId == (lenY))
+                        if (yId == (lenY))
                         {
                             neighbours.Add(_grid[xId + direction.X][yId - lenY]);
                         }
@@ -254,12 +264,23 @@ namespace PrototypeModel
                     //}
 
                     canvas.DrawLine(penRed, (float) lattice.Coordinates().X, (float) lattice.Coordinates().Y,
-                                    (float) (lattice.Coordinates().X + 5*lattice.MacroVelocity().X),
-                                    (float) (lattice.Coordinates().Y + 5*lattice.MacroVelocity().Y));
-
+                                    (float) (lattice.Coordinates().X + _scale*lattice.MacroVelocity().X),
+                                    (float) (lattice.Coordinates().Y + _scale*lattice.MacroVelocity().Y));
 
                 }
 
+                
+                List<Point> y2Velosity = new List<Point>();
+                for (int i = 0; i < _grid.Count; i++)
+                {
+                    y2Velosity.Add(_grid[i][10].SpeedToDraw());
+                }
+
+                for (int i = 1; i < y2Velosity.Count; i++)
+                {
+                    canvas.DrawLine(new Pen(Color.Aqua), y2Velosity[i - 1], y2Velosity[i]);
+                }
+                
                 canvas.DrawString((iter+1).ToString(), new Font("Arial", 10), new SolidBrush(Color.Black), 10, 10);
             }
             return bmp;

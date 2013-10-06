@@ -37,6 +37,11 @@ namespace PrototypeModel
             return (dynamic)vect1.X * vect2.X + (dynamic)vect1.Y * vect2.Y;
         } 
 
+        public double Module()
+        {
+            return Math.Pow(Math.Pow((dynamic)X, 2) + Math.Pow((dynamic)Y, 2), 0.5);
+        }
+
         public Vector<Type> CrossProduct(Vector<Type> vect1)
         {
             throw new NotImplementedException();

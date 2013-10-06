@@ -24,8 +24,10 @@ namespace PrototypeModel
             double sleepTime;
             sleepTime = double.Parse(ReplaceDot(textBox1.Text));
 
+            double force = double.Parse(ReplaceDot(textBox3.Text));
+            double scale = double.Parse(ReplaceDot(textBox4.Text));
             int iterations = int.Parse(textBox2.Text);
-            UI.Button1Clicker(pictureBox1,(int)(sleepTime*1000),iterations);
+            UI.Button1Clicker(pictureBox1,(int)(sleepTime*1000),iterations,force,scale);
         }
 
         private void Redraw(object sender, ImageArguments arguments)

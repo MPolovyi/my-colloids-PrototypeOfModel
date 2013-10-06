@@ -31,10 +31,9 @@ namespace PrototypeModel
         private double[] _microDensity, _microDensityAfterTime, _weights, _microEqDensity;
         private bool _IsBoundary,_IsTransition;
 
-        public Lattice(int x,int y,bool IsBoundary,bool IsTransition)
+        public Lattice(int x,int y,bool IsBoundary,bool IsTransition, double force)
         {
-            _outerForce = new Vector<double>(0,-10);
-            
+            _outerForce = new Vector<double>(0,-force);
             _xCoord = x;
             _yCoord = y;
             _IsBoundary = IsBoundary;
@@ -45,6 +44,17 @@ namespace PrototypeModel
             _weights = Weights();
             _microEqDensity = MicroEqDensity();
             neighbours = new List<Lattice>(9);
+        }
+
+        public Point SpeedToDraw()
+        {
+            return new Point(_xCoord,_yCoord+Speed());
+        }
+
+        public int Speed()
+        {
+            double spd = Math.Pow(Math.Pow(MacroVelocity().X, 2) + Math.Pow(MacroVelocity().Y, 2),0.5);
+            return (int) (40 * spd/_outerForce.Module());
         }
 
         public bool IsBoundary()
@@ -78,7 +88,20 @@ namespace PrototypeModel
 
             for (int i = 0; i < tmp.Length; i++)
             {
-                tmp[i] = _weights[i]*(_outerForce * _directions[i]);
+                if (_yCoord<500)
+                {
+                    Random rnd = new Random();
+                    
+                    double someRndY = rnd.NextDouble();
+                    Vector<double> NewForce = new Vector<double>( _outerForce.X , _outerForce.Y);
+                    tmp[i] = _weights[i] * (NewForce * _directions[i]);
+                }
+                else
+                {
+                    Vector<double> NewForce = new Vector<double>(_outerForce.X, _outerForce.Y);
+                    tmp[i] = _weights[i] * (NewForce * _directions[i]);
+                }
+
             }
 
             return tmp;
